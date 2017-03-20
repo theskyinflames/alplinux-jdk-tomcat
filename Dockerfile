@@ -50,7 +50,15 @@ COPY tomcat-users.xml /opt/tomcat/conf/
 RUN sed -i "s/TOMCAT_ADMIN_USER/${TOMCAT_ADMIN_USER}/g" /opt/tomcat/conf/tomcat-users.xml
 RUN sed -i "s/TOMCAT_ADMIN_PASSWORD/${TOMCAT_ADMIN_PASSWORD}/g" /opt/tomcat/conf/tomcat-users.xml
 
+# Install mysql client
+# Installing mysql
+RUN apt-get install software-properties-common
+RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+RUN add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.utexas.edu/mariadb/repo/10.1/ubuntu xenial main'
+RUN apt-get update
+RUN apt-get -y install mariadb-client
 
+# Entry point
 ADD run.sh /
 
 CMD /run.sh
