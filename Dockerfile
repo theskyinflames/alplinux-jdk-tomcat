@@ -44,8 +44,8 @@ RUN cd /opt/tomcat; \
     
 ## Set tomcat admin
 COPY tomcat-users.xml /opt/tomcat/conf/
-RUN sed -i "s/TOMCAT_ADMIN_USER/${TOMCAT_ADMIN_USER}/g" ./tomcat-users.xml
-RUN sed -i "s/TOMCAT_ADMIN_PASSWORD/${TOMCAT_ADMIN_PASSWORD}/g" ./tomcat-users.xml
+RUN sed -i "s/TOMCAT_ADMIN_USER/${TOMCAT_ADMIN_USER}/g" /opt/tomcat/conf/tomcat-users.xml
+RUN sed -i "s/TOMCAT_ADMIN_PASSWORD/${TOMCAT_ADMIN_PASSWORD}/g" /opt/tomcat/conf/tomcat-users.xml
 
 # Installing Git tool
 RUN echo "Installing Git tools";apt-get -y install git-core build-essential
