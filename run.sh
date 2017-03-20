@@ -1,4 +1,9 @@
 #!/bin/bash
 
-ufw allow 8080
-systemctl start tomcat
+# Start tomcat
+cd /opt/tomcat
+ls -lart
+su -c ./bin/startup.sh tomcat
+
+# Keeping the container running
+while :; do echo ""; sleep 30; done
