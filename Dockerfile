@@ -6,6 +6,7 @@ FROM ubuntu:16.04
 
 ENV TOMCAT_ADMIN_USER admin
 ENV TOMCAT_ADMIN_PASSWORD admin
+ENV JAVA_OPTS="-Djava.security.egd=file:/dev/urandom"
 
 # Upgrade OS image
 RUN apt-get update;apt-get upgrade -y
