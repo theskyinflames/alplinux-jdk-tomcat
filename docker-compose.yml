@@ -1,0 +1,14 @@
+version: '2'
+services:
+    tomcat:
+      privileged: true
+      image: theskyinflames/tomcat
+      environment:
+        - TOMCAT_ADMIN_USER=admin
+        - TOMCAT_ADMIN_PASSWORD=admin
+        #- JAVA_OPTS=-Xms1g -Xmx1g
+        #- CATALINA_OPTS=-Xms1g -Xmx1g
+      ports:
+       - 8080:8080
+      volumes:
+       - /LOGS:/opt/tomcat/logs:Z

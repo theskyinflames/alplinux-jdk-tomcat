@@ -36,7 +36,7 @@ COPY apache-tomcat-8.5.12.tar.gz /
 RUN ls -la /; tar -xvzf /apache-tomcat-8.5.12.tar.gz -C /opt/tomcat --strip-components=1
 
 RUN cd /opt/tomcat; \
-    ls -la ; \
+    ls -la ; ls -la ./bin/ \
     chgrp -R tomcat /opt/tomcat; \
     chmod -R g+r conf; \
     chmod g+x conf; \
