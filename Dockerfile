@@ -26,7 +26,7 @@ RUN apt-get install -y oracle-java8-set-default
 # Installing maven
 RUN apt-get -y install maven curl
 
-# Installing tomcat https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-8-on-ubuntu-16-04
+# Installing tomcat 
 RUN mkdir -p /opt/tomcat; \
     groupadd tomcat; \
     useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat;
@@ -40,12 +40,10 @@ RUN cd /opt/tomcat; \
     chgrp -R tomcat /opt/tomcat; \
     chmod -R g+r conf; \
     chmod g+x conf; \
-    chown -R tomcat webapps/ work/ temp/ logs/
-
-
+    chown -R tomcat webapps/ work/ temp/ logs/ ;
+    
 ## Set tomcat admin
-ENV TOMCAT_ADMIN_CONF="<role rolename="manager-gui"/><role rolename="admin-gui"/><user username="$TOMCAT_ADMIN_USER" password="$TOMCAT_ADMIN_PASSWORD" roles="manager-gui,admin-gui"/>";
-RUN C=$(echo $TOMCAT_ADMIN_CONF | sed 's/\//\\\//g');sed "/<\/Students>/ s/.*/${C}\n&/" /opt/tomcat/conf/tomcat-users.xml
+COPY tomcat-users.xml /opt/tomcat/conf/    
 
 # Installing Git tool
 RUN echo "Installing Git tools";apt-get -y install git-core build-essential
