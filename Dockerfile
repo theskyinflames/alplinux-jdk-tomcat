@@ -6,7 +6,10 @@ FROM ubuntu:16.04
 
 ENV TOMCAT_ADMIN_USER admin
 ENV TOMCAT_ADMIN_PASSWORD admin
-ENV JAVA_OPTS="-Djava.security.egd=file:/dev/urandom"
+
+# Slow tomcat starting fix taken from  
+# https://blog.georgovassilis.com/2015/09/13/tomcat-starts-slowly-in-docker-container/
+ENV JAVA_OPTS="-Djava.security.egd=file:/dev/urandom" 
 
 # Upgrade OS image
 RUN apt-get update;apt-get upgrade -y
