@@ -21,6 +21,10 @@ COPY apache-tomcat-8.5.12.tar.gz /
 RUN ls -la /; tar -xvzf /apache-tomcat-8.5.12.tar.gz -C /opt/tomcat
 
 RUN cd /opt/tomcat/apache-tomcat-8.5.12; \
+    mv * ..; \
+    cd ..; \
+    rm -rf  apache-tomcat-*; \
+    pwd ; \
     ls -la ; \
     chgrp -R tomcat /opt/tomcat; \
     chmod -R g+r conf; \
