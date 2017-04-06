@@ -1,41 +1,26 @@
-FROM ubuntu:16.04
+FROM anapsix/alpine-java:8_jdk_unlimited
 
-#
-# Insatll tomcat https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-8-on-ubuntu-16-04
-#
-
-ENV TOMCAT_ADMIN_USER admin
-ENV TOMCAT_ADMIN_PASSWORD admin
-
-# Upgrade OS image
-RUN apt-get update;apt-get upgrade -y
-
-# Installing java 8 JDK
-## Adding the repository
-RUN apt-get -y install software-properties-common
-RUN add-apt-repository ppa:webupd8team/java
-RUN apt-get update
-## Enabling silent install
-RUN echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
-RUN echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
-## Installing Oracle JDK 8
-RUN apt-get -y install oracle-java8-installer
-RUN update-java-alternatives -s java-8-oracle
-RUN apt-get install -y oracle-java8-set-default
+RUN apk update
 
 # Installing maven
-RUN apt-get -y install maven curl
+RUN mkdir -p /opt/maven
+ADD apache-maven-3.3.9-bin.tar.gz /opt/maven/
+RUN chmod -R 777 /opt/maven;sync
+RUN ls -lart /opt/maven/apache-maven-3.3.9
+ENV MAVEN_HOME=/opt/maven/apache-maven-3.3.9
+ENV PATH=$PATH:/opt/maven/apache-maven-3.3.9/bin
+
 
 # Installing tomcat https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-8-on-ubuntu-16-04
 RUN mkdir -p /opt/tomcat; \
-    groupadd tomcat; \
-    useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat;
+    addgroup tomcat; \
+    adduser -G tomcat -h /opt/tomcat -D tomcat;
 
 COPY apache-tomcat-8.5.12.tar.gz /
 
-RUN ls -la /; tar -xvzf /apache-tomcat-8.5.12.tar.gz -C /opt/tomcat --strip-components=1
+RUN ls -la /; tar -xvzf /apache-tomcat-8.5.12.tar.gz -C /opt/tomcat
 
-RUN cd /opt/tomcat; \
+RUN cd /opt/tomcat/apache-tomcat-8.5.12; \
     ls -la ; \
     chgrp -R tomcat /opt/tomcat; \
     chmod -R g+r conf; \
@@ -43,12 +28,8 @@ RUN cd /opt/tomcat; \
     chown -R tomcat webapps/ work/ temp/ logs/
 
 
-## Set tomcat admin
-ENV TOMCAT_ADMIN_CONF="<role rolename="manager-gui"/><role rolename="admin-gui"/><user username="$TOMCAT_ADMIN_USER" password="$TOMCAT_ADMIN_PASSWORD" roles="manager-gui,admin-gui"/>";
-RUN C=$(echo $TOMCAT_ADMIN_CONF | sed 's/\//\\\//g');sed "/<\/Students>/ s/.*/${C}\n&/" /opt/tomcat/conf/tomcat-users.xml
-
 # Installing Git tool
-RUN echo "Installing Git tools";apt-get -y install git-core build-essential
+RUN echo "Installing Git tools";apk add git
 
 ADD run.sh /
 
