@@ -10,8 +10,7 @@ RUN ls -lart /opt/maven/apache-maven-3.3.9
 ENV MAVEN_HOME=/opt/maven/apache-maven-3.3.9
 ENV PATH=$PATH:/opt/maven/apache-maven-3.3.9/bin
 
-
-# Installing tomcat https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-8-on-ubuntu-16-04
+# Install tomcat
 RUN mkdir -p /opt/tomcat; \
     addgroup tomcat; \
     adduser -G tomcat -h /opt/tomcat -D tomcat;
